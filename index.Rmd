@@ -4,12 +4,31 @@ output: html_document
 ---
 
 <div style="padding-top: 30px;"></div>
+<br />
+<img src="https://i.pinimg.com/originals/e1/81/37/e181373e11716a1bbb956f3ce39bafda.gif" />
 
 ![](images/logo.png)
 
 # **My Lab Journal**
 
 This is a template example for lab journaling. Students in the data science courses at the Institute of Entrepreneurship will use this template to learn R for business analytics. Students can replace this text as they wish.
+
+```{r, eval = TRUE}
+numbers <- 1:1000
+
+# This will print the first 10 elements of the vector numbers
+numbers[1:30]
+
+# This will plot a histogram of 100 random elements of the vector numbers
+hist(sample(numbers, 700, replace = T))
+```
+
+# **My guys**
+Just testing with my guys
+
+![](https://media4.giphy.com/media/mKeZL4u7kgTYx7YbBl/giphy.gif)
+
+
 
 ## How to use
 
