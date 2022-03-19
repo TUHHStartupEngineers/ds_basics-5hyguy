@@ -21,6 +21,8 @@ numbers[1:30]
 
 # This will plot a histogram of 100 random elements of the vector numbers
 hist(sample(numbers, 700, replace = T))
+
+
 ```
 
 # **My guys**
