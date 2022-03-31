@@ -16,39 +16,74 @@ output:
 knitr::opts_chunk$set(message=FALSE,warning=FALSE, cache=TRUE)
 ```
 
-**IMPORTANT:** You can delete everything in here and start fresh. You might want to start by not deleting anything above this line until you know what that stuff is doing.
+**IMPORTANT:** --
 
-This is an `.Rmd` file. It is plain text with special features. Any time you write just like this, it will be compiled to normal text in the website. If you put a \# in front of your text, it will create a top level-header.
-
-# My first post
+# Challenge Data Visualization
 
 Last compiled: `r Sys.Date()`
-
-Notice that whatever you define as a top level header, automatically gets put into the table of contents bar on the left. 
-
-## Second level header
-
-You can add more headers by adding more hashtags. These won't be put into the table of contents
-
-### third level header
-
-Here's an even lower level header
-
-# My second post (note the order)
-
-Last compiled: `r Sys.Date()`
-
-I'm writing this tutorial going from the top down. And, this is how it will be printed. So, notice the second post is second in the list. If you want your most recent post to be at the top, then make a new post starting at the top. If you want the oldest first, do, then keep adding to the bottom
-
-# Adding R stuff
-
-So far this is just a blog where you can write in plain text and serve your writing to a webpage. One of the main purposes of this lab journal is to record your progress learning R. The reason I am asking you to use this process is because you can both make a website, and a lab journal, and learn R all in R-studio. This makes everything really convenient and in the same place. 
-
-So, let's say you are learning how to make a histogram in R. For example, maybe you want to sample 100 numbers from a normal distribution with mean = 0, and standard deviation = 1, and then you want to plot a histogram. You can do this right here by using an r code block, like this:
 
 ```{r}
-samples <- rnorm(100, mean=0, sd=1)
-hist(samples)
-```
+library(tidyverse)
+library(lubridate)
+library(glue)
+library(ggrepel)
+library(maps)
+library(ggmap)
+covid_data_tbl <- read_csv("https://covid.ourworldindata.org/data/owid-covid-data.csv")
+countries <- c("Germany","United Kingdom","France","Spain","United States","Europe")
 
-When you knit this R Markdown document, you will see that the histogram is printed to the page, along with the R code. This document can be set up to hide the R code in the webpage, just delete the comment (hashtag) from the cold folding option in the yaml header up top. For purposes of letting yourself see the code, and me see the code, best to keep it the way that it is. You'll learn that all of these things and more can be customized in each R code block.
+#wrangling
+cumulative_cases_tbl <- covid_data_tbl %>% 
+  select(location,date,total_cases) %>%
+  filter(location %in% countries) %>% filter(!is.na(total_cases)) #%>% 
+  # as_factor(location) %>% fct_reorder(total_cases) #%>% 
+  #mutate(new_date=floor_date(date(date),unit = "months")) %>% 
+  # group_by(location) %>% 
+  # summarise(cum_cases=sum(new_cases)) %>% 
+  # mutate(month_year=glue('{format(new_date,"%B %Y")}'))
+  #ungroup()
+#visualization
+cumulative_cases_tbl$label <- NA
+cumulative_cases_tbl$label[which((cumulative_cases_tbl$date == 
+                                   max(cumulative_cases_tbl$date)))] <- 
+  cumulative_cases_tbl$total_cases[which(cumulative_cases_tbl$date==
+                                           max(cumulative_cases_tbl$date))]
+cumulative_cases_tbl %>% 
+  ggplot(aes(date,total_cases,color=location)) +
+  geom_line(size =1)+
+  scale_y_continuous(labels = scales::label_number(scale=1e-6,
+                                                    suffix="M"))+
+  geom_label_repel(aes(label = label))+
+  scale_color_discrete(type = c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7"))
+ 
+# Case 2
+#Lat and Longitude Data for world
+world <- map_data("world")
+
+#Calculate moratality rate
+mortality_rate_tbl <- covid_data_tbl %>% 
+  select(location, date,new_deaths,population) %>%filter(!is.na(new_deaths)) %>%
+  filter(date<=as.Date("2021-04-16")) %>% 
+  mutate(mort_rate=new_deaths/population) %>% 
+  group_by(location) %>% 
+  summarise(mortality_rate=sum(mort_rate)) %>% arrange(desc(mortality_rate))%>% 
+  mutate(location = case_when(
+    
+    location == "United Kingdom" ~ "UK",
+    location == "United States" ~ "USA",
+    location == "Democratic Republic of Congo" ~ "Democratic Republic of the Congo",
+    TRUE ~ location
+    
+  ))
+mapped_data <- world %>% left_join(mortality_rate_tbl,by=c("region"="location"))
+mapped_data %>% 
+  ggplot(aes(long,lat, mortality_rate))+
+  geom_map(aes(map_id=region, fill = mortality_rate ),map = mapped_data) +
+  scale_fill_continuous(low="red", high="black",
+                        labels = scales::label_number(scale  = 1e2,
+                                                      prefix = "",
+                                                      suffix = "%"))
+
+
+
+```

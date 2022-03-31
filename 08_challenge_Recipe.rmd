@@ -1,0 +1,130 @@
+---
+title: "08 Challenge Recipe"
+author: "Olawole Famakin"
+date: "2021-04"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    df_print: paged
+    collapsed: false
+    number_sections: true
+    toc_depth: 3
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message=FALSE,warning=FALSE, cache=TRUE)
+```
+
+**IMPORTANT:** --
+
+# Challenge Recipe
+
+Last compiled: `r Sys.Date()`
+
+```{r}
+# CHALLENGE
+library(tidyverse)
+library(tidymodels)
+# Modeling
+library(parsnip)
+# Preprocessing & Sampling
+library(recipes)
+library(rsample)
+# Modeling Error Metrics
+library(yardstick)
+# Plotting Decision Trees
+library(rpart.plot)
+
+# Modeling ----------------------------------------------------------------
+#bike_orderlines_tbl <- readRDS("~/bike_orderlines_tbl.rds")
+bike_orderlines_tbl <- readRDS("Business Decisions with Machine Learning/bike_orderlines.rds")
+glimpse(bike_orderlines_tbl)
+
+model_sales_tbl <- bike_orderlines_tbl %>%
+  select(total_price, model, category_2, frame_material) %>%
+  group_by(model, category_2, frame_material) %>% #es wird gruppiert nach model, aber durch die anderen beiden Eintr?ge werden categroy and frame angezeigt als Spalten
+  summarise(total_sales = sum(total_price)) %>% # aggregierte Sales
+  ungroup() %>%
+  arrange(desc(total_sales))
+
+# adding features
+bike_features_tbl <- readRDS("Business Decisions with Machine Learning/bike_features_tbl.rds") %>%
+  select(-contains('Rotor')) #Removing column Break Rotor (although there is a space)
+glimpse(bike_features_tbl)
+# bike_id, bike name and model year haben keinen Einfluss auf Preis, gender auch nicht wichtig
+
+#Changing name on column with which we will work
+names(bike_features_tbl)[names(bike_features_tbl)=="Rear Derailleur"] <- "Rear.Derailleur"
+
+
+# String-?bersetzung --> mit recipe machen
+# Daten vorbereiten von bike-features mit 
+
+
+
+# 1. erstellen des Test- udn Trainingsdatenset
+set.seed(seed = 1123)
+split_obj <- rsample::initial_split(bike_features_tbl, prop   = 0.80, #80% der Daten sind Trainingsdaten
+                                    strata = "category_2")
+# Assign training and test data
+train_tbl <- training(split_obj)
+test_tbl  <- testing(split_obj)
+
+
+recipe_obj <- recipe(price ~ ., data = train_tbl) %>%
+  step_cut(weight, breaks = c(8.598, 13.048)) %>% #um zu klassifizieren in dummies
+  step_select(bike_id, model, model_year, frame_material, category_2, weight, 'Rear.Derailleur') %>%
+  #update_role(bike_id, model, model_year, new_role = "ID") %>% # Variablen ausschlie?en, die nicht relevant sind
+  #step_rm(category_1, category_3:Fork, 'Front Derailler':'Break Rotor') %>%  #alles was rausgenommen wird -- '' wegen Leerzeichen
+  step_dummy(frame_material, category_2, one_hot = FALSE) %>% # Dummy-Werte erstellen f?r alle zur Identifikation --> man braucht x-1 Dummies f?r x Variablen --> wenn ein Fahrad nicht aus Alu ist, muss es aus Carbon sein --> auch f?r category...hier der Befehl f?r oone_got
+  step_dummy('Rear.Derailleur', one_hot = TRUE) %>% #one_hot muss True sein f?r Werte, die NA haben in Spalte
+  prep()
+
+
+
+# 2.0 TRAINING & TEST SETS ---- ------------->???
+#bike_features_tbl <- bike_features_tbl %>% 
+ # mutate(id = row_number()) %>% 
+  # select(id, everything(), -url)
+
+
+# Vorbereiten des Data splits
+#bike_features_tbl %>% distinct(category_2) ??
+
+# 3. LINEAR MODEL
+# Modelling: Creating model, set engine, fit model to data
+model_01_linear_lm_simple <- linear_reg(mode = "regression") %>%
+  set_engine("lm") %>%
+  fit(price ~ category_2 + frame_material, data = train_tbl) #mit zwei Variablen
+
+#Predictions
+model_01_linear_lm_simple %>%
+  predict(new_data = test_tbl)
+
+
+#4. Metrics with yardstick
+model_01_linear_lm_simple %>%
+  predict(new_data = test_tbl) %>%
+  bind_cols(test_tbl %>% select(price)) %>%
+  yardstick::metrics(truth = price, estimate = .pred)
+
+
+#Visualization
+model_01_linear_lm_simple$fit %>%
+  broom::tidy() %>%
+  arrange(p.value) %>%
+  mutate(term = as_factor(term) %>% fct_rev()) %>%
+  
+  ggplot(aes(x = estimate, y = term)) +
+  geom_point(color = "#2dc6d6", size = 3) +
+  ggrepel::geom_label_repel(aes(label = scales::dollar(estimate, accuracy = 1, suffix = " €", prefix = "")),
+                            size = 4, fill = "#272A36", color = "white") +
+  scale_x_continuous(labels = scales::dollar_format(suffix = " €", prefix = "")) +
+  labs(title = "Linear Regression: Feature Importance",
+       subtitle = "Model 01: Simple lm Model")
+
+
+
+```

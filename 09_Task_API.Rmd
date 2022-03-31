@@ -1,0 +1,70 @@
+---
+title: "Task Api"
+author: "Olawole Famakin"
+date: "2021-04"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    df_print: paged
+    collapsed: false
+    number_sections: true
+    toc_depth: 3
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message=FALSE,warning=FALSE, cache=TRUE)
+```
+
+**IMPORTANT:** --
+
+# Task Api
+
+Last compiled: `r Sys.Date()`
+
+```{r}
+library(httr)
+#replace this with yours
+clientID = 'b7c0b84d9bf6432fb254e49ee32d58fa'
+secret = 'b2a31bdbf49e417c841adac6a2fb5d6f'
+response = POST(
+  'https://accounts.spotify.com/api/token',
+  accept_json(),
+  authenticate(clientID, secret),
+  body = list(grant_type = 'client_credentials'),
+  encode = 'form',
+  verbose()
+)
+mytoken = content(response)$access_token
+HeaderValue = paste0('Bearer ', mytoken)
+
+albumID = "1NAmidJlEaVgA3MpcPFYGq"
+track_URI = paste0('https://api.spotify.com/v1/albums/', albumID,'/tracks')
+track_response = GET(url = track_URI, add_headers(Authorization = HeaderValue))
+tracks = content(track_response)
+
+ntracks = length(tracks$items)
+tracks_list<-data.frame(
+  name=character(ntracks),
+  id=character(ntracks),
+  artist=character(ntracks),
+  disc_number=numeric(ntracks),
+  track_number=numeric(ntracks),
+  duration_ms=numeric(ntracks),
+  stringsAsFactors=FALSE
+)
+
+for(i in 1:ntracks){
+  tracks_list[i,]$id <- tracks$items[[i]]$id
+  tracks_list[i,]$name <- tracks$items[[i]]$name
+  tracks_list[i,]$artist <- tracks$items[[i]]$artists[[1]]$name
+  tracks_list[i,]$disc_number <- tracks$items[[i]]$disc_number
+  tracks_list[i,]$track_number <- tracks$items[[i]]$track_number
+  tracks_list[i,]$duration_ms <- tracks$items[[i]]$duration_ms
+}
+tracks_list
+
+
+
+```
