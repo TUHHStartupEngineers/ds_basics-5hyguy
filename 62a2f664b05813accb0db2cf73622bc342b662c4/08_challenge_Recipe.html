@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Olawole Famakin" />
+
+
+<title>08 Challenge Recipe</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Olawole Famakin Lab Journal</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Index</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Journal
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01_tidyverse.html">01 Tidyverse</a>
+    </li>
+    <li>
+      <a href="02_data_acquisition.html">02 Data Acquisition</a>
+    </li>
+    <li>
+      <a href="03_data_wrangling.html">03 Data Wrangling</a>
+    </li>
+    <li>
+      <a href="04_data_visualization.html">04 Data Visualization</a>
+    </li>
+    <li>
+      <a href="07_Machine_Learning.html">07 Machine Learning</a>
+    </li>
+    <li>
+      <a href="08_Challenge_Recipe.html">08 Challenge Recipe</a>
+    </li>
+    <li>
+      <a href="09_Task_API.html">09 Task API</a>
+    </li>
+    <li>
+      <a href="10_Challenge_Explainable.html">10 Challenge Explainable</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">08 Challenge Recipe</h1>
+<h4 class="author">Olawole Famakin</h4>
+<h4 class="date">2021-04</h4>
+
+</div>
+
+
+<p><strong>IMPORTANT:</strong> –</p>
+<div id="challenge-recipe" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Challenge Recipe</h1>
+<p>Last compiled: 2022-03-31</p>
+<pre class="r"><code># CHALLENGE
+library(tidyverse)
+library(tidymodels)
+# Modeling
+library(parsnip)
+# Preprocessing &amp; Sampling
+library(recipes)
+library(rsample)
+# Modeling Error Metrics
+library(yardstick)
+# Plotting Decision Trees
+library(rpart.plot)
+
+# Modeling ----------------------------------------------------------------
+#bike_orderlines_tbl &lt;- readRDS(&quot;~/bike_orderlines_tbl.rds&quot;)
+bike_orderlines_tbl &lt;- readRDS(&quot;Business Decisions with Machine Learning/bike_orderlines.rds&quot;)
+glimpse(bike_orderlines_tbl)</code></pre>
+<pre><code>## Rows: 15,644
+## Columns: 18
+## $ order_id       &lt;dbl&gt; 1, 1, 2, 2, 3, 3, 3, 3, 3, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7…
+## $ order_line     &lt;dbl&gt; 1, 2, 1, 2, 1, 2, 3, 4, 5, 1, 1, 2, 3, 4, 1, 2, 3, 4, 1…
+## $ order_date     &lt;dttm&gt; 2015-01-07, 2015-01-07, 2015-01-10, 2015-01-10, 2015-0…
+## $ model          &lt;chr&gt; &quot;Spectral CF 7 WMN&quot;, &quot;Ultimate CF SLX Disc 8.0 ETAP&quot;, &quot;…
+## $ model_year     &lt;dbl&gt; 2021, 2020, 2021, 2019, 2020, 2020, 2020, 2021, 2020, 2…
+## $ category_1     &lt;chr&gt; &quot;Mountain&quot;, &quot;Road&quot;, &quot;Mountain&quot;, &quot;Road&quot;, &quot;Mountain&quot;, &quot;Hy…
+## $ category_2     &lt;chr&gt; &quot;Trail&quot;, &quot;Race&quot;, &quot;Trail&quot;, &quot;Triathlon Bike&quot;, &quot;Dirt Jump&quot;…
+## $ category_3     &lt;chr&gt; &quot;Spectral&quot;, &quot;Ultimate&quot;, &quot;Neuron&quot;, &quot;Speedmax&quot;, &quot;Stitched…
+## $ price          &lt;dbl&gt; 3119, 5359, 2729, 1749, 1219, 1359, 2529, 1559, 3899, 6…
+## $ quantity       &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1…
+## $ total_price    &lt;dbl&gt; 3119, 5359, 2729, 1749, 1219, 1359, 2529, 1559, 3899, 6…
+## $ frame_material &lt;chr&gt; &quot;carbon&quot;, &quot;carbon&quot;, &quot;carbon&quot;, &quot;carbon&quot;, &quot;aluminium&quot;, &quot;c…
+## $ weight         &lt;dbl&gt; 13.80, 7.44, 14.06, 8.80, 11.50, 8.80, 8.20, 8.85, 14.4…
+## $ url            &lt;chr&gt; &quot;https://www.canyon.com/en-de/mountain-bikes/trail-bike…
+## $ bikeshop       &lt;chr&gt; &quot;AlexandeRad&quot;, &quot;AlexandeRad&quot;, &quot;WITT-RAD&quot;, &quot;WITT-RAD&quot;, &quot;…
+## $ location       &lt;chr&gt; &quot;Hamburg, Hamburg&quot;, &quot;Hamburg, Hamburg&quot;, &quot;Bremen, Bremen…
+## $ lat            &lt;dbl&gt; 53.57532, 53.57532, 53.07379, 53.07379, 48.78234, 48.78…
+## $ lng            &lt;dbl&gt; 10.015340, 10.015340, 8.826754, 8.826754, 9.180819, 9.1…</code></pre>
+<pre class="r"><code>model_sales_tbl &lt;- bike_orderlines_tbl %&gt;%
+  select(total_price, model, category_2, frame_material) %&gt;%
+  group_by(model, category_2, frame_material) %&gt;% #es wird gruppiert nach model, aber durch die anderen beiden Eintr?ge werden categroy and frame angezeigt als Spalten
+  summarise(total_sales = sum(total_price)) %&gt;% # aggregierte Sales
+  ungroup() %&gt;%
+  arrange(desc(total_sales))
+
+# adding features
+bike_features_tbl &lt;- readRDS(&quot;Business Decisions with Machine Learning/bike_features_tbl.rds&quot;) %&gt;%
+  select(-contains(&#39;Rotor&#39;)) #Removing column Break Rotor (although there is a space)
+glimpse(bike_features_tbl)</code></pre>
+<pre><code>## Rows: 231
+## Columns: 66
+## $ bike_id                     &lt;dbl&gt; 2875, 2873, 2874, 2876, 2877, 2225, 2091, …
+## $ model                       &lt;chr&gt; &quot;Aeroad CF SL Disc 8.0 Di2&quot;, &quot;Aeroad CF SL…
+## $ model_year                  &lt;dbl&gt; 2020, 2020, 2020, 2020, 2020, 2019, 2019, …
+## $ frame_material              &lt;chr&gt; &quot;carbon&quot;, &quot;carbon&quot;, &quot;carbon&quot;, &quot;carbon&quot;, &quot;c…
+## $ weight                      &lt;dbl&gt; 7.60, 7.27, 7.10, 7.73, 7.83, 6.80, 6.80, …
+## $ price                       &lt;dbl&gt; 4579, 6919, 6429, 5069, 3609, 6139, 5359, …
+## $ category_1                  &lt;chr&gt; &quot;Road&quot;, &quot;Road&quot;, &quot;Road&quot;, &quot;Road&quot;, &quot;Road&quot;, &quot;R…
+## $ category_2                  &lt;chr&gt; &quot;Race&quot;, &quot;Race&quot;, &quot;Race&quot;, &quot;Race&quot;, &quot;Race&quot;, &quot;R…
+## $ category_3                  &lt;chr&gt; &quot;Aeroad&quot;, &quot;Aeroad&quot;, &quot;Aeroad&quot;, &quot;Aeroad&quot;, &quot;A…
+## $ gender                      &lt;chr&gt; &quot;unisex&quot;, &quot;unisex&quot;, &quot;unisex&quot;, &quot;unisex&quot;, &quot;u…
+## $ url                         &lt;chr&gt; &quot;https://www.canyon.com/en-de/road-bikes/r…
+## $ Frame                       &lt;chr&gt; &quot;Canyon Aeroad CF SL Disc&quot;, &quot;Canyon Aeroad…
+## $ Fork                        &lt;chr&gt; &quot;Canyon FK0041 CF SLX Disc&quot;, &quot;Canyon FK004…
+## $ `Rear Derailleur`           &lt;chr&gt; &quot;Shimano Ultegra Di2 R8050 SS&quot;, &quot;SRAM RED …
+## $ `Front Derailleur`          &lt;chr&gt; &quot;Shimano Ultegra Di2 R8050&quot;, &quot;SRAM RED eTa…
+## $ Cassette                    &lt;chr&gt; &quot;Shimano Ultegra R8000, 11-speed, 11-28T&quot;,…
+## $ Crank                       &lt;chr&gt; &quot;Shimano Ultegra R8000&quot;, &quot;SRAM RED D1&quot;, &quot;S…
+## $ `Bottom bracket`            &lt;chr&gt; &quot;Shimano Pressfit BB72&quot;, &quot;SRAM Pressfit RE…
+## $ `Thru Axle`                 &lt;chr&gt; &quot;Canyon Thru Axle&quot;, &quot;Canyon Thru Axle&quot;, &quot;C…
+## $ Cockpit                     &lt;chr&gt; &quot;Canyon H36 Aerocockpit CF&quot;, &quot;Canyon H36 A…
+## $ Saddle                      &lt;chr&gt; &quot;Selle Italia SLR&quot;, &quot;Selle Italia SLR&quot;, &quot;S…
+## $ Seatpost                    &lt;chr&gt; &quot;Canyon S27 Aero VCLS CF&quot;, &quot;Canyon S27 Aer…
+## $ Pedals                      &lt;chr&gt; &quot;None included&quot;, &quot;None included&quot;, &quot;None in…
+## $ `Derailleur hanger`         &lt;chr&gt; &quot;Shop Derailleur Hanger GP0211-01&quot;, &quot;Shop …
+## $ Battery                     &lt;chr&gt; &quot;&quot;, &quot;SRAM eTap Powerpack&quot;, &quot;&quot;, &quot;SRAM eTap …
+## $ Brake                       &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
+## $ `Shift Lever`               &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;Shimano Di2 Remot…
+## $ Chain                       &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;Shimano CN-HG901 …
+## $ Stem                        &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;Canyon V13&quot;, …
+## $ Handlebar                   &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;Canyon H16 Ae…
+## $ Headset                     &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
+## $ Motor                       &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
+## $ `Battery Charger`           &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
+## $ `Flat Pedals`               &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
+## $ Chainguard                  &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
+## $ `Aero Bar`                  &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
+## $ `Brake Lever / Master`      &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
+## $ `Wheel Tire System`         &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
+## $ `Suspension Fork`           &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
+## $ `Disc Brake`                &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
+## $ Grips                       &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
+## $ Chainring                   &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
+## $ Display                     &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
+## $ Modeswitch                  &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
+## $ `Rear Shock`                &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
+## $ Light                       &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
+## $ Fender                      &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
+## $ `Bike Racks`                &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
+## $ `Brake 1`                   &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;SRAM S-900 Direct Mou…
+## $ `Brake 2`                   &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;SRAM S-900 Direct Mou…
+## $ `Shift-/ Brake Lever 1`     &lt;chr&gt; &quot;Shimano Ultegra Di2 R8070, 11-speed&quot;, &quot;SR…
+## $ `Shift-/ Brake Lever 2`     &lt;chr&gt; &quot;Shimano Ultegra Di2 R8070, 11-speed&quot;, &quot;SR…
+## $ `Wheel 1`                   &lt;chr&gt; &quot;DT Swiss ARC 1400 Dicut&quot;, &quot;DT Swiss ARC 1…
+## $ `Wheel 2`                   &lt;chr&gt; &quot;DT Swiss ARC 1400 Dicut&quot;, &quot;DT Swiss ARC 1…
+## $ `Tyre 1`                    &lt;chr&gt; &quot;Continental Grand Prix 5000 / Attack  23 …
+## $ `Tyre 2`                    &lt;chr&gt; &quot;Continental Grand Prix 5000, 25 mm&quot;, &quot;Con…
+## $ `Handlebar Tape 1`          &lt;chr&gt; &quot;Canyon Ergospeed Gel&quot;, &quot;Canyon Ergospeed …
+## $ `Handlebar Tape 2`          &lt;chr&gt; &quot;Canyon bar-end plug&quot;, &quot;Canyon bar-end plu…
+## $ `Manuals and Accessories 1` &lt;chr&gt; &quot;Canyon tool case&quot;, &quot;Canyon tool case&quot;, &quot;C…
+## $ `Manuals and Accessories 2` &lt;chr&gt; &quot;DT Swiss warranty &amp; intended use manual&quot;,…
+## $ `Manuals and Accessories 3` &lt;chr&gt; &quot;Canyon starter box&quot;, &quot;Canyon starter box&quot;…
+## $ `Manuals and Accessories 4` &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;BAG R…
+## $ `Manuals and Accessories 5` &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
+## $ `Manuals and Accessories 6` &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
+## $ `Manuals and Accessories 7` &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
+## $ `Manuals and Accessories 8` &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…</code></pre>
+<pre class="r"><code># bike_id, bike name and model year haben keinen Einfluss auf Preis, gender auch nicht wichtig
+
+#Changing name on column with which we will work
+names(bike_features_tbl)[names(bike_features_tbl)==&quot;Rear Derailleur&quot;] &lt;- &quot;Rear.Derailleur&quot;
+
+
+# String-?bersetzung --&gt; mit recipe machen
+# Daten vorbereiten von bike-features mit 
+
+
+
+# 1. erstellen des Test- udn Trainingsdatenset
+set.seed(seed = 1123)
+split_obj &lt;- rsample::initial_split(bike_features_tbl, prop   = 0.80, #80% der Daten sind Trainingsdaten
+                                    strata = &quot;category_2&quot;)
+# Assign training and test data
+train_tbl &lt;- training(split_obj)
+test_tbl  &lt;- testing(split_obj)
+
+
+recipe_obj &lt;- recipe(price ~ ., data = train_tbl) %&gt;%
+  step_cut(weight, breaks = c(8.598, 13.048)) %&gt;% #um zu klassifizieren in dummies
+  step_select(bike_id, model, model_year, frame_material, category_2, weight, &#39;Rear.Derailleur&#39;) %&gt;%
+  #update_role(bike_id, model, model_year, new_role = &quot;ID&quot;) %&gt;% # Variablen ausschlie?en, die nicht relevant sind
+  #step_rm(category_1, category_3:Fork, &#39;Front Derailler&#39;:&#39;Break Rotor&#39;) %&gt;%  #alles was rausgenommen wird -- &#39;&#39; wegen Leerzeichen
+  step_dummy(frame_material, category_2, one_hot = FALSE) %&gt;% # Dummy-Werte erstellen f?r alle zur Identifikation --&gt; man braucht x-1 Dummies f?r x Variablen --&gt; wenn ein Fahrad nicht aus Alu ist, muss es aus Carbon sein --&gt; auch f?r category...hier der Befehl f?r oone_got
+  step_dummy(&#39;Rear.Derailleur&#39;, one_hot = TRUE) %&gt;% #one_hot muss True sein f?r Werte, die NA haben in Spalte
+  prep()
+
+
+
+# 2.0 TRAINING &amp; TEST SETS ---- -------------&gt;???
+#bike_features_tbl &lt;- bike_features_tbl %&gt;% 
+ # mutate(id = row_number()) %&gt;% 
+  # select(id, everything(), -url)
+
+
+# Vorbereiten des Data splits
+#bike_features_tbl %&gt;% distinct(category_2) ??
+
+# 3. LINEAR MODEL
+# Modelling: Creating model, set engine, fit model to data
+model_01_linear_lm_simple &lt;- linear_reg(mode = &quot;regression&quot;) %&gt;%
+  set_engine(&quot;lm&quot;) %&gt;%
+  fit(price ~ category_2 + frame_material, data = train_tbl) #mit zwei Variablen
+
+#Predictions
+model_01_linear_lm_simple %&gt;%
+  predict(new_data = test_tbl)</code></pre>
+<pre><code>## # A tibble: 47 × 1
+##    .pred
+##    &lt;dbl&gt;
+##  1 4407.
+##  2 1578.
+##  3 1578.
+##  4 1578.
+##  5 3111.
+##  6 3335.
+##  7 4384.
+##  8 4384.
+##  9 4384.
+## 10 4384.
+## # … with 37 more rows</code></pre>
+<pre class="r"><code>#4. Metrics with yardstick
+model_01_linear_lm_simple %&gt;%
+  predict(new_data = test_tbl) %&gt;%
+  bind_cols(test_tbl %&gt;% select(price)) %&gt;%
+  yardstick::metrics(truth = price, estimate = .pred)</code></pre>
+<pre><code>## # A tibble: 3 × 3
+##   .metric .estimator .estimate
+##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+## 1 rmse    standard    1187.   
+## 2 rsq     standard       0.463
+## 3 mae     standard     893.</code></pre>
+<pre class="r"><code>#Visualization
+model_01_linear_lm_simple$fit %&gt;%
+  broom::tidy() %&gt;%
+  arrange(p.value) %&gt;%
+  mutate(term = as_factor(term) %&gt;% fct_rev()) %&gt;%
+  
+  ggplot(aes(x = estimate, y = term)) +
+  geom_point(color = &quot;#2dc6d6&quot;, size = 3) +
+  ggrepel::geom_label_repel(aes(label = scales::dollar(estimate, accuracy = 1, suffix = &quot; €&quot;, prefix = &quot;&quot;)),
+                            size = 4, fill = &quot;#272A36&quot;, color = &quot;white&quot;) +
+  scale_x_continuous(labels = scales::dollar_format(suffix = &quot; €&quot;, prefix = &quot;&quot;)) +
+  labs(title = &quot;Linear Regression: Feature Importance&quot;,
+       subtitle = &quot;Model 01: Simple lm Model&quot;)</code></pre>
+<p><img src="08_challenge_Recipe_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

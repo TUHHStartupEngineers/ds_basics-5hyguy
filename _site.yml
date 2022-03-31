@@ -3,7 +3,7 @@ output:
   html_document:
     css: style.css
 navbar:
-  title: "MyLabJournal"
+  title: "Olawole Famakin Lab Journal"
   left:
     - text: "Index"
       href: index.html
@@ -17,9 +17,16 @@ navbar:
               href: 03_data_wrangling.html
             - text: "04 Data Visualization"
               href: 04_data_visualization.html
-    - text: "Class notes"
-      href: 05_class_notes.html
-    - text: "Links"
-      href: 06_links.html
+            - text: "07 Machine Learning"
+              href: 07_Machine_Learning.html
+            - text: "08 Challenge Recipe"
+              href: 08_Challenge_Recipe.html
+            - text: "09 Task API"
+              href: 09_Task_API.html
+            - text: "10 Challenge Explainable"
+              href: 10_Challenge_Explainable.html
+              
+          
+
 output_dir: "62a2f664b05813accb0db2cf73622bc342b662c4"
 exclude: ["docks.jpg", "journal_encrypted.html"]

@@ -1,0 +1,164 @@
+---
+title: "07 Machine Learning"
+author: "Olawole Famakin"
+date: "2021-04"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    df_print: paged
+    collapsed: false
+    number_sections: true
+    toc_depth: 3
+    code_folding: hide
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message=FALSE,warning=FALSE, cache=TRUE)
+```
+
+**IMPORTANT:** --
+
+# Challenge Machine Learning
+
+Last compiled: `r Sys.Date()`
+
+```{r}
+# Load of libraries
+# Gegebenenfalls erstmal installieren
+library(tidyverse)
+library(tidyquant)
+library(broom)
+library(umap)
+library(ggplot2)
+library(ggrepel)
+library(lubridate) #f?r year-Funktion
+
+# Ziel: daily precentage return ??
+
+#stores_tbl      <- read_excel(path  = "C:/Users/qaiss/Documents/01_MBA Technologiemanagement/10_Data_Science_for_Managers/ds_basics-Qaissul/20220130_Machine_Learning_Fundamentals/Data/breakfast_at_the_frat.xlsx"
+# relativen Pfad mit einer Tastenkombination anzeigen lassen
+
+# STOCK PRICES
+sp_500_prices_tbl <- read_rds("Business Decisions with Machine Learning/sp_500_prices_tbl.rds")
+sp_500_prices_tbl
+
+# company information belonging to stock prices
+sp_500_index_tbl <- read_rds("Business Decisions with Machine Learning/sp_500_index_tbl.rds")
+sp_500_index_tbl
+
+#?bersicht Datenset
+sp_500_prices_tbl %>% glimpse()
+
+# Step 1 - "Convert stock prices to standardized format
+sp_500_daily_returns_tbl <- sp_500_prices_tbl %>%
+ 
+  select(symbol, date, adjusted) %>%
+  filter(year(date) >= 2018) %>%
+  group_by(symbol) %>% #Gruppieren, damit man nicht die Vortagsdaten einer anderen Firma nimmt
+  mutate(adjusted_previous = lag(adjusted)) %>%
+  ungroup() %>%
+  # remove_rownames(adjusted_previous) --> checken, wie NA zu entfernen ist
+  mutate(adjusted_difference = adjusted - adjusted_previous) %>% #Differenz zum Vortag
+  mutate(pct_return = adjusted_difference/adjusted_previous) %>% #prozentuale Ver?nderung
+  select(symbol, date, pct_return) #Nur notwendige Daten
+  #Hier kann man alternativ fertiges Datenset hochladen, falls man nicht weiterkommt
+
+
+#Step 2 - "Convert to User-Item Format"
+stock_date_matrix_tbl <- sp_500_daily_returns_tbl %>%
+  pivot_wider(names_from = date, values_from = pct_return, values_fill = 0) %>%
+  mutate_all( ~replace(., is.na(.), 0)) #?berall, wo NA ist soll 0 rein
+  #Hier k?nnen wir wieder die richtigen Daten importieren, wenn man nicht weitergekommen ist
+
+#Step 3 - "Perform K-Means Clustering"
+kmeans_obj <- stock_date_matrix_tbl %>%
+  select(-symbol) %>% #Entfernen von non-numeric column symbol
+  kmeans(centers = 4, nstart = 20) #siehe Skript
+#Tidying des K-Means Objektes:
+broom::tidy(kmeans_obj) %>% glimpse() #Center-Infos des Kmeans Modells
+broom::glance(kmeans_obj) #Gesamtmetrik des Modells inkl. tot.withness als wichtigste Metrik
+# Extra:
+broom::augment(kmeans_obj, stock_date_matrix_tbl) %>% #Wie in der VOr?bung: Cluster zu dem Datenset
+  select(symbol, .cluster)
+
+#Step 4 - "FInd the optimal value of K"
+#Funktion, um ?ber verschiedene "k" zu itererieren und das beste auszusuchen:
+kmeans_mapper <- function(center = 3) {
+  stock_date_matrix_tbl %>%
+    select(-symbol) %>%
+    kmeans(centers = center, nstart = 20)
+}
+
+k_means_mapped_tbl <- tibble(centers = 1:30) %>%
+  mutate(k_means = centers %>% map(kmeans_mapper)) %>%
+  mutate(glance  = k_means %>% map(glance))
+
+
+#Extra: Aus Vorg?nger?bung, um zusammenfassend darzustellen, wie gut ein bestimmtes "k" performt --> Auch benutzt f?r Visualisierungs-Pipeline
+k_means_mapped_tbl %>%
+  unnest(glance) %>%
+  select(centers, tot.withinss)
+
+#Visualisierung mit Scree Plot
+k_means_mapped_tbl %>%
+  unnest(glance) %>%
+  select(centers, tot.withinss) %>%
+  
+  ggplot(aes(centers, tot.withinss)) +
+  geom_point(color = "#2d8ad6", size = 4) +
+  geom_line(color = "#2d8ad6", size = 1) +
+  ggrepel::geom_label_repel(aes(label = centers), color = "#2DC6D6") + #Labels je Center
+  labs(title = "Skree Plot", #Bildformatierung und Conclusion
+       subtitle = "Constant rate of change after 5 cluster",
+       caption = "Conclusion: Based on the Scree Plot, we select 5 clusters to segment the companies.")
+
+#Step 5 - "Apply UMAP"
+#Hier erneut Werte-Upload m?glich - nicht notwendig
+
+#Umap Funktion f?r 2D-Visualisierung
+umap_results <- stock_date_matrix_tbl %>%
+  select(-symbol) %>%
+  umap()
+
+#Layout, wo die Visualisierungskoordinaten sind, von umap_results integrieren in Ausgangsmatrix
+umap_results_tbl <- umap_results$layout %>%
+  as_tibble(.name_repair = "unique") %>% # Die und n?chste Zeile nennen die Spalten um in x und y
+  set_names(c("x", "y")) %>%
+  bind_cols(
+    stock_date_matrix_tbl %>% select(symbol) #Verkn?pfen mit Ausgangsmatrix
+  )
+
+#Visualisierung
+umap_results_tbl %>%
+  ggplot(aes(x, y)) +
+  geom_point(alpha=0.5) + 
+  geom_label_repel(aes(label = symbol), size = 3) +
+  theme_tq()
+
+
+#Step 6 - "Combine K-Means and UMAP"
+#Die 10 Center rausziehen, weil danach schlecht performt wurde und der Skree plot flacher wurde
+k_means_obj <- k_means_mapped_tbl %>%
+  pull(k_means) %>%
+  pluck(10)
+# Formatieren in ein gew?nschtes Format --> weg
+kmeans_10_clusters_tbl <- k_means_obj %>% 
+  augment(stock_date_matrix_tbl) %>% #Zusammenf?hren mit Ausgangs-Datenset
+  select(symbol, .cluster) #
+
+# Bind data together
+umap_kmeans_results_tbl <- umap_results_tbl %>%
+  left_join(kmeans_10_clusters_tbl) %>%
+  left_join(sp_500_index_tbl %>% select(symbol, company, sector))
+
+#Visualisierung
+umap_kmeans_results_tbl %>%
+  ggplot(aes(x,y,color = .cluster))+ #x,y weil ich zuvor diese von V1 und V2 umbenannt habe
+  geom_point(alpha = 0.5)+ # Geometrie
+  geom_label_repel(aes(label = symbol), size = 2, fill = "#f7f8fa")+ # zus?tzlich labels
+  labs(title = "Assignment - Stock segmentation with 2D Projection",
+   subtitle = "UMAP 2D Projection with K-Means Cluster Assignment",
+   caption = "Conclusion: Segment 4 differs a lot")
+
+
+```

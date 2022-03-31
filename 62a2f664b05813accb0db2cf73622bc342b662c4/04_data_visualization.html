@@ -320,7 +320,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">MyLabJournal</a>
+      <a class="navbar-brand" href="index.html">Olawole Famakin Lab Journal</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -346,13 +346,19 @@ div.tocify {
     <li>
       <a href="04_data_visualization.html">04 Data Visualization</a>
     </li>
+    <li>
+      <a href="07_Machine_Learning.html">07 Machine Learning</a>
+    </li>
+    <li>
+      <a href="08_Challenge_Recipe.html">08 Challenge Recipe</a>
+    </li>
+    <li>
+      <a href="09_Task_API.html">09 Task API</a>
+    </li>
+    <li>
+      <a href="10_Challenge_Explainable.html">10 Challenge Explainable</a>
+    </li>
   </ul>
-</li>
-<li>
-  <a href="05_class_notes.html">Class notes</a>
-</li>
-<li>
-  <a href="06_links.html">Links</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -380,34 +386,71 @@ div.tocify {
 </div>
 
 
-<p><strong>IMPORTANT:</strong> You can delete everything in here and start fresh. You might want to start by not deleting anything above this line until you know what that stuff is doing.</p>
-<p>This is an <code>.Rmd</code> file. It is plain text with special features. Any time you write just like this, it will be compiled to normal text in the website. If you put a # in front of your text, it will create a top level-header.</p>
-<div id="my-first-post" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> My first post</h1>
-<p>Last compiled: 2022-03-19</p>
-<p>Notice that whatever you define as a top level header, automatically gets put into the table of contents bar on the left.</p>
-<div id="second-level-header" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> Second level header</h2>
-<p>You can add more headers by adding more hashtags. These won’t be put into the table of contents</p>
-<div id="third-level-header" class="section level3" number="1.1.1">
-<h3><span class="header-section-number">1.1.1</span> third level header</h3>
-<p>Here’s an even lower level header</p>
-</div>
-</div>
-</div>
-<div id="my-second-post-note-the-order" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> My second post (note the order)</h1>
-<p>Last compiled: 2022-03-19</p>
-<p>I’m writing this tutorial going from the top down. And, this is how it will be printed. So, notice the second post is second in the list. If you want your most recent post to be at the top, then make a new post starting at the top. If you want the oldest first, do, then keep adding to the bottom</p>
-</div>
-<div id="adding-r-stuff" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Adding R stuff</h1>
-<p>So far this is just a blog where you can write in plain text and serve your writing to a webpage. One of the main purposes of this lab journal is to record your progress learning R. The reason I am asking you to use this process is because you can both make a website, and a lab journal, and learn R all in R-studio. This makes everything really convenient and in the same place.</p>
-<p>So, let’s say you are learning how to make a histogram in R. For example, maybe you want to sample 100 numbers from a normal distribution with mean = 0, and standard deviation = 1, and then you want to plot a histogram. You can do this right here by using an r code block, like this:</p>
-<pre class="r"><code>samples &lt;- rnorm(100, mean=0, sd=1)
-hist(samples)</code></pre>
+<p><strong>IMPORTANT:</strong> –</p>
+<div id="challenge-data-visualization" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Challenge Data Visualization</h1>
+<p>Last compiled: 2022-03-31</p>
+<pre class="r"><code>library(tidyverse)
+library(lubridate)
+library(glue)
+library(ggrepel)
+library(maps)
+library(ggmap)
+covid_data_tbl &lt;- read_csv(&quot;https://covid.ourworldindata.org/data/owid-covid-data.csv&quot;)
+countries &lt;- c(&quot;Germany&quot;,&quot;United Kingdom&quot;,&quot;France&quot;,&quot;Spain&quot;,&quot;United States&quot;,&quot;Europe&quot;)
+
+#wrangling
+cumulative_cases_tbl &lt;- covid_data_tbl %&gt;% 
+  select(location,date,total_cases) %&gt;%
+  filter(location %in% countries) %&gt;% filter(!is.na(total_cases)) #%&gt;% 
+  # as_factor(location) %&gt;% fct_reorder(total_cases) #%&gt;% 
+  #mutate(new_date=floor_date(date(date),unit = &quot;months&quot;)) %&gt;% 
+  # group_by(location) %&gt;% 
+  # summarise(cum_cases=sum(new_cases)) %&gt;% 
+  # mutate(month_year=glue(&#39;{format(new_date,&quot;%B %Y&quot;)}&#39;))
+  #ungroup()
+#visualization
+cumulative_cases_tbl$label &lt;- NA
+cumulative_cases_tbl$label[which((cumulative_cases_tbl$date == 
+                                   max(cumulative_cases_tbl$date)))] &lt;- 
+  cumulative_cases_tbl$total_cases[which(cumulative_cases_tbl$date==
+                                           max(cumulative_cases_tbl$date))]
+cumulative_cases_tbl %&gt;% 
+  ggplot(aes(date,total_cases,color=location)) +
+  geom_line(size =1)+
+  scale_y_continuous(labels = scales::label_number(scale=1e-6,
+                                                    suffix=&quot;M&quot;))+
+  geom_label_repel(aes(label = label))+
+  scale_color_discrete(type = c(&quot;#E69F00&quot;, &quot;#56B4E9&quot;, &quot;#009E73&quot;, &quot;#F0E442&quot;, &quot;#0072B2&quot;, &quot;#D55E00&quot;, &quot;#CC79A7&quot;))</code></pre>
 <p><img src="04_data_visualization_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
-<p>When you knit this R Markdown document, you will see that the histogram is printed to the page, along with the R code. This document can be set up to hide the R code in the webpage, just delete the comment (hashtag) from the cold folding option in the yaml header up top. For purposes of letting yourself see the code, and me see the code, best to keep it the way that it is. You’ll learn that all of these things and more can be customized in each R code block.</p>
+<pre class="r"><code># Case 2
+#Lat and Longitude Data for world
+world &lt;- map_data(&quot;world&quot;)
+
+#Calculate moratality rate
+mortality_rate_tbl &lt;- covid_data_tbl %&gt;% 
+  select(location, date,new_deaths,population) %&gt;%filter(!is.na(new_deaths)) %&gt;%
+  filter(date&lt;=as.Date(&quot;2021-04-16&quot;)) %&gt;% 
+  mutate(mort_rate=new_deaths/population) %&gt;% 
+  group_by(location) %&gt;% 
+  summarise(mortality_rate=sum(mort_rate)) %&gt;% arrange(desc(mortality_rate))%&gt;% 
+  mutate(location = case_when(
+    
+    location == &quot;United Kingdom&quot; ~ &quot;UK&quot;,
+    location == &quot;United States&quot; ~ &quot;USA&quot;,
+    location == &quot;Democratic Republic of Congo&quot; ~ &quot;Democratic Republic of the Congo&quot;,
+    TRUE ~ location
+    
+  ))
+mapped_data &lt;- world %&gt;% left_join(mortality_rate_tbl,by=c(&quot;region&quot;=&quot;location&quot;))
+mapped_data %&gt;% 
+  ggplot(aes(long,lat, mortality_rate))+
+  geom_map(aes(map_id=region, fill = mortality_rate ),map = mapped_data) +
+  scale_fill_continuous(low=&quot;red&quot;, high=&quot;black&quot;,
+                        labels = scales::label_number(scale  = 1e2,
+                                                      prefix = &quot;&quot;,
+                                                      suffix = &quot;%&quot;))</code></pre>
+<p><img src="04_data_visualization_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
 </div>
 
 
